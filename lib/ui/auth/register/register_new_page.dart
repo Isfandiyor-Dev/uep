@@ -5,37 +5,45 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:uep/bloc/auth/auth_bloc.dart';
 import 'package:uep/bloc/auth/auth_event.dart';
-import 'package:uep/ui/auth/register/register_new_page.dart';
 import 'package:uep/ui/auth/validators.dart';
 import 'package:uep/ui/auth/widgets/my_signin_button.dart';
 import 'package:uep/ui/auth/widgets/my_text_field.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class RegisterNewPage extends StatefulWidget {
+  const RegisterNewPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegisterNewPage> createState() => _RegisterNewPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterNewPageState extends State<RegisterNewPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  final _nameController = TextEditingController();
 
   final _passwordController = TextEditingController();
 
+  final _confirmPasswordController = TextEditingController();
+
   PhoneNumber phoneNumber = PhoneNumber();
 
-  void _onTapLogin() {
+  void _onTapRegister() {
+    print(_nameController.text);
     print(_passwordController.text);
+    print(_confirmPasswordController.text);
     print(phoneNumber);
 
     if (_formKey.currentState!.validate()) {
       try {
         Map<String, dynamic> data = {
+          "name": _nameController.text,
           "phone": phoneNumber.phoneNumber,
           "password": _passwordController.text,
+          "password_confirmation": _confirmPasswordController.text,
         };
-        BlocProvider.of<AuthenticationBloc>(context)
-            .add(AuthenticationSignIn(data: data));
+        context
+            .read<AuthenticationBloc>()
+            .add(AuthenticationSignUp(data: data));
       } catch (e) {
         print('Xatolik yuz berdi: $e');
       }
@@ -50,11 +58,10 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       backgroundColor: Colors.blue[100],
       body: SingleChildScrollView(
-        padding: const EdgeInsets.only(top: 30),
+        padding: const EdgeInsets.only(bottom: 25, top: 30),
         child: Center(
           child: Column(
             children: [
-              const SizedBox(height: 30),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -79,11 +86,11 @@ class _LoginPageState extends State<LoginPage> {
               const SizedBox(height: 10),
               Container(
                 width: sreenWidth * 0.90,
-                height: sreenHeight * 0.7,
+                height: sreenHeight * 0.9,
                 padding: const EdgeInsets.all(25),
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(30),
+                  borderRadius: BorderRadius.circular(20),
                   boxShadow: [
                     BoxShadow(
                       color: const Color(0xffC4CBD6).withOpacity(0.1),
@@ -97,7 +104,7 @@ class _LoginPageState extends State<LoginPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const Text(
-                        "Sign In to Woorkroom",
+                        "Valid your phone",
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -114,6 +121,7 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                       ),
+
                       // This is Phone number field
                       InternationalPhoneNumberInput(
                         onInputChanged: (value) {
@@ -125,7 +133,14 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         validator: Validator.validatePhoneNumber,
                       ),
-
+                      MyTextField(
+                        controller: _nameController,
+                        validator: Validator.validateName,
+                        title: "Name",
+                        hintText: "Pavel Durov",
+                        textInputType: TextInputType.name,
+                      ),
+                      // Password text field
                       MyTextField(
                         controller: _passwordController,
                         validator: Validator.validatePassword,
@@ -134,6 +149,17 @@ class _LoginPageState extends State<LoginPage> {
                         textInputType: TextInputType.visiblePassword,
                         isObscurely: true,
                       ),
+                      MyTextField(
+                        controller: _confirmPasswordController,
+                        validator: (value) => Validator.validateConfirmPassword(
+                            value, _passwordController.text),
+                        title: "Password Confirmation",
+                        hintText: "••••••••",
+                        textInputType: TextInputType.visiblePassword,
+                        isObscurely: true,
+                      ),
+
+                      // Remember me and Forgot password
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -172,9 +198,11 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ],
                       ),
+                      const SizedBox(height: 10),
+                      // Sign In Button
                       InkWell(
                         borderRadius: BorderRadius.circular(15),
-                        onTap: _onTapLogin,
+                        onTap: _onTapRegister,
                         child: Container(
                           height: 60,
                           width: double.infinity,
@@ -192,7 +220,7 @@ class _LoginPageState extends State<LoginPage> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                "Sign In ",
+                                "Sign Up",
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 20,
@@ -208,6 +236,7 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                       ),
+                      const SizedBox(height: 15),
                       const Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -226,15 +255,10 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       TextButton(
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const RegisterNewPage(),
-                            ),
-                          );
+                          Navigator.pop(context);
                         },
                         child: const Text(
-                          "Don't have an account?",
+                          "Do you have an account?",
                           style: TextStyle(
                             color: Color(0xff3F8CFF),
                             fontSize: 17,

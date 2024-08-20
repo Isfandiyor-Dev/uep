@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:uep/ui/auth/widgets/my_pinput_widget.dart';
@@ -10,7 +12,6 @@ class RegisterPage extends StatelessWidget {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  final _pinController = TextEditingController();
 
   void _onTapRegister() {}
 
@@ -22,10 +23,10 @@ class RegisterPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.blue[100],
       body: SingleChildScrollView(
+        padding: const EdgeInsets.only(bottom: 25, top: 30),
         child: Center(
           child: Column(
             children: [
-              const SizedBox(height: 30),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -49,12 +50,12 @@ class RegisterPage extends StatelessWidget {
               ),
               const SizedBox(height: 10),
               Container(
-                width: sreenWidth * 0.9,
-                height: sreenHeight * 0.9,
+                width: sreenWidth * 0.90,
+                height: sreenHeight,
                 padding: const EdgeInsets.all(25),
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(30),
+                  borderRadius: BorderRadius.circular(20),
                   boxShadow: [
                     BoxShadow(
                       color: const Color(0xffC4CBD6).withOpacity(0.1),
@@ -130,7 +131,7 @@ class RegisterPage extends StatelessWidget {
                         title: "Password",
                         hintText: "••••••••",
                         textInputType: TextInputType.visiblePassword,
-                        isObscure: true,
+                        isObscurely: true,
                       ),
 
                       // Remember me and Forgot password
@@ -172,7 +173,7 @@ class RegisterPage extends StatelessWidget {
                           ),
                         ],
                       ),
-
+                      const SizedBox(height: 10),
                       // Sign In Button
                       InkWell(
                         borderRadius: BorderRadius.circular(15),
@@ -210,6 +211,23 @@ class RegisterPage extends StatelessWidget {
                           ),
                         ),
                       ),
+                      const SizedBox(height: 15),
+                      const Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          MySignInButton(
+                            imagePath: "assets/google.svg",
+                          ),
+                          SizedBox(width: 15),
+                          MySignInButton(
+                            imagePath: "assets/facebook.svg",
+                          ),
+                          SizedBox(width: 15),
+                          MySignInButton(
+                            imagePath: "assets/github.svg",
+                          ),
+                        ],
+                      ),
                       TextButton(
                         onPressed: () {
                           Navigator.pop(context);
@@ -226,19 +244,6 @@ class RegisterPage extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  MySignInButton(
-                    imagePath: "assets/google.svg",
-                  ),
-                  SizedBox(width: 15),
-                  MySignInButton(
-                    imagePath: "assets/facebook.svg",
-                  ),
-                ],
-              )
             ],
           ),
         ),
