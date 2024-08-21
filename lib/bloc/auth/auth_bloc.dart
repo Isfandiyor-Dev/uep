@@ -66,10 +66,11 @@ class AuthenticationBloc
     AuthenticationLoggedOut event,
     Emitter<AuthenticationState> emit,
   ) async {
-    emit(AuthenticationLoading());
+    // emit(AuthenticationLoading());
     try {
       await authService.logout();
-      emit(AuthenticationUnauthenticated());
+      add(AuthenticationStarted());
+      // emit(AuthenticationUnauthenticated());
     } catch (e) {
       emit(AuthenticationFailure(error: 'Logout failed: ${e.toString()}'));
     }

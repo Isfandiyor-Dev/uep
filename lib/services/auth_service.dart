@@ -1,28 +1,17 @@
 // ignore_for_file: avoid_print
 
 import 'package:dio/dio.dart';
-import 'package:uep/services/local_db.dart';
+import 'package:uep/services/dio/dio_client.dart';
+import 'package:uep/services/local_db/local_db.dart';
 
 class AuthService {
-  late final Dio _dio;
-
-  AuthService() {
-    _dio = Dio(
-      BaseOptions(baseUrl: "http://millima.flutterwithakmaljon.uz/api"),
-    );
-  }
+  final DioClient dioClient = DioClient();
 
   Future<Map<String, dynamic>?> signUp(Map<String, dynamic> newData) async {
-    String url = "/register";
+    String url = "/api/register";
     try {
-      final response = await _dio.post(url, data: newData
-          // data: {
-          //   "name": "Hello Isfandiyor",
-          //   "phone": "+998881180515",
-          //   "password": "1146236",
-          //   "password_confirmation": "1146236",
-          // },
-          );
+      final response = await dioClient.dio.post(url, data: newData);
+
       print("Bu uning datasi: ${response.data}");
       final token = response.data["data"]["token"];
       if (token != null) {
@@ -41,14 +30,9 @@ class AuthService {
   }
 
   Future<Map<String, dynamic>?> signIn(Map<String, dynamic> newData) async {
-    String url = "/login";
+    String url = "/api/login";
     try {
-      final response = await _dio.post(url, data: newData
-          // data: {
-          //   "phone": "+998881180515",
-          //   "password": "1146236",
-          // },
-          );
+      final response = await dioClient.dio.post(url, data: newData);
 
       final token = response.data["data"]["token"];
       if (token != null) {
@@ -68,18 +52,11 @@ class AuthService {
   }
 
   Future<void> logout() async {
-    String url = '/logout';
+    String url = '/api/logout';
     try {
       final token = await LocalDb.getIdToken();
       print("Bu token $token");
-      final response = await _dio.post(
-        url,
-        options: Options(
-          headers: {
-            'Authorization': 'Bearer $token',
-          },
-        ),
-      );
+      final response = await dioClient.dio.post(url);
       print("Logout response: ${response.data}");
       await LocalDb.deleteToken();
       if (response.statusCode == 200) {

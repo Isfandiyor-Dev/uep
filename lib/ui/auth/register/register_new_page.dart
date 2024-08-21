@@ -5,9 +5,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:uep/bloc/auth/auth_bloc.dart';
 import 'package:uep/bloc/auth/auth_event.dart';
-import 'package:uep/ui/auth/validators.dart';
+import 'package:uep/bloc/auth/auth_state.dart';
+import 'package:uep/utils/validators.dart';
 import 'package:uep/ui/auth/widgets/my_signin_button.dart';
 import 'package:uep/ui/auth/widgets/my_text_field.dart';
+import 'package:uep/ui/screens/home_screen.dart';
 
 class RegisterNewPage extends StatefulWidget {
   const RegisterNewPage({super.key});
@@ -200,39 +202,52 @@ class _RegisterNewPageState extends State<RegisterNewPage> {
                       ),
                       const SizedBox(height: 10),
                       // Sign In Button
-                      InkWell(
-                        borderRadius: BorderRadius.circular(15),
-                        onTap: _onTapRegister,
-                        child: Container(
-                          height: 60,
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15),
-                            color: const Color(0xff3F8CFF),
-                            boxShadow: [
-                              BoxShadow(
-                                color: const Color(0xff3F8CFF).withOpacity(0.5),
-                                blurRadius: 25,
+                      BlocListener<AuthenticationBloc, AuthenticationState>(
+                        listener: (context, state) {
+                          if (state is AuthenticationAuthenticated) {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const HomeScreen(),
                               ),
-                            ],
-                          ),
-                          child: const Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                "Sign Up",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
+                            );
+                          }
+                        },
+                        child: InkWell(
+                          borderRadius: BorderRadius.circular(15),
+                          onTap: _onTapRegister,
+                          child: Container(
+                            height: 60,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                              color: const Color(0xff3F8CFF),
+                              boxShadow: [
+                                BoxShadow(
+                                  color:
+                                      const Color(0xff3F8CFF).withOpacity(0.5),
+                                  blurRadius: 25,
                                 ),
-                              ),
-                              Icon(
-                                Icons.navigate_next_rounded,
-                                color: Colors.white,
-                                size: 28,
-                              ),
-                            ],
+                              ],
+                            ),
+                            child: const Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "Sign Up",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Icon(
+                                  Icons.navigate_next_rounded,
+                                  color: Colors.white,
+                                  size: 28,
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),

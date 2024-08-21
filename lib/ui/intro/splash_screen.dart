@@ -13,27 +13,30 @@ class SplashScreen extends StatelessWidget {
     return BlocListener<AuthenticationBloc, AuthenticationState>(
       listener: (context, state) {
         if (state is AuthenticationAuthenticated) {
-          // Foydalanuvchi authenticationdan o'tgan bo'lsa HomeScreen ga yo'naltirish
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(builder: (context) => const HomeScreen()),
           );
         } else if (state is AuthenticationUnauthenticated) {
-          // Foydalanuvchi authenticationdan o'tmagan bo'lsa LoginPage ga yo'naltirish
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(builder: (context) => const LoginPage()),
           );
         } else if (state is AuthenticationFailure) {
-          // Xato holatini ham shu yerda ko'rib chiqish mumkin
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('Authentication Error: ${state.error}')),
           );
         }
       },
-      child: const Scaffold(
+      child: Scaffold(
         body: Center(
-          child: Text("Loading"),
+          child: Image.asset(
+            "assets/logo.png",
+            width: 150,
+            height: 150,
+            color: Colors.lightBlue,
+            fit: BoxFit.cover,
+          ),
         ),
-      ), // Yoki Loading ekrani
+      ),
     );
   }
 }

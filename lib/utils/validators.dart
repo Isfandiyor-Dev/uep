@@ -1,11 +1,12 @@
 class Validator {
   // Telefon raqam uchun validator
   static String? validatePhoneNumber(String? value) {
-    final phoneRegExp = RegExp(r'^\d{9,15}$');
+    RegExp phoneRegExp = RegExp(r'^\d{2}(\s*\d{1,3}){2,3}\s*\d{1,3}$');
+
     if (value == null || value.isEmpty) {
       return 'Telefon raqamini kiriting';
     } else if (!phoneRegExp.hasMatch(value)) {
-      return 'Yaroqli telefon raqamini kiriting (masalan, +998901234567)';
+      return 'Yaroqli telefon raqamini kiriting (masalan, 901234567)';
     }
     return null; // Hammasi yaxshi bo'lsa, null qaytadi
   }
