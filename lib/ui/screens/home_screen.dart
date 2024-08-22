@@ -7,12 +7,15 @@ import 'package:uep/bloc/profile/profile_bloc.dart';
 import 'package:uep/bloc/profile/profile_event.dart';
 import 'package:uep/bloc/profile/profile_state.dart';
 import 'package:uep/models/user_model.dart';
+import 'package:uep/ui/admin/widget/drawer_widget.dart';
 import 'package:uep/ui/auth/login/login_page.dart';
 import 'package:uep/ui/screens/profile/profile_page.dart';
-import 'package:uep/ui/screens/widgets/shimmer_loading.dart';
+import 'package:uep/ui/screens/widgets/shimmer_profile_loading.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+  HomeScreen({super.key});
+
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
@@ -33,11 +36,11 @@ class HomeScreen extends StatelessWidget {
           UserModel userModel = state.user;
 
           return Scaffold(
+            drawer: userModel.role.id == 3 ? const AdminDrawer() : null,
             appBar: AppBar(
               title: const Text("Home"),
               centerTitle: true,
               toolbarHeight: 80,
-              automaticallyImplyLeading: false,
               actions: [
                 BlocListener<AuthenticationBloc, AuthenticationState>(
                   listener: (context, state) {

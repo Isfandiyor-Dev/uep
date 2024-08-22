@@ -11,6 +11,18 @@ import 'package:uep/ui/auth/widgets/my_signin_button.dart';
 import 'package:uep/ui/auth/widgets/my_text_field.dart';
 import 'package:uep/ui/screens/home_screen.dart';
 
+enum Role {
+  student(["Student", 1]),
+  teacher(["Teacher", 2]),
+  admin(["Admin", 3]);
+
+  // String qiymatni saqlash uchun maydon
+  final List description;
+
+  // Konstruktor
+  const Role(this.description);
+}
+
 class RegisterNewPage extends StatefulWidget {
   const RegisterNewPage({super.key});
 
@@ -29,6 +41,8 @@ class _RegisterNewPageState extends State<RegisterNewPage> {
 
   PhoneNumber phoneNumber = PhoneNumber();
 
+  Role role = Role.student;
+
   void _onTapRegister() {
     print(_nameController.text);
     print(_passwordController.text);
@@ -42,6 +56,7 @@ class _RegisterNewPageState extends State<RegisterNewPage> {
           "phone": phoneNumber.phoneNumber,
           "password": _passwordController.text,
           "password_confirmation": _confirmPasswordController.text,
+          "role_id": role.description[1],
         };
         context
             .read<AuthenticationBloc>()
@@ -105,12 +120,39 @@ class _RegisterNewPageState extends State<RegisterNewPage> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
-                        "Valid your phone",
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            "Register",
+                            style: TextStyle(
+                              fontSize: 25,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          PopupMenuButton<Role>(
+                            icon: Text("Your role: ${role.description[0]}"),
+                            itemBuilder: (context) => [
+                              const PopupMenuItem(
+                                value: Role.student,
+                                child: Text("Student"),
+                              ),
+                              const PopupMenuItem(
+                                value: Role.teacher,
+                                child: Text("Teacher"),
+                              ),
+                              const PopupMenuItem(
+                                value: Role.admin,
+                                child: Text("Admin"),
+                              ),
+                            ],
+                            onSelected: (value) {
+                              setState(() {
+                                role = value;
+                              });
+                            },
+                          )
+                        ],
                       ),
                       const Align(
                         alignment: Alignment.centerLeft,
@@ -205,11 +247,12 @@ class _RegisterNewPageState extends State<RegisterNewPage> {
                       BlocListener<AuthenticationBloc, AuthenticationState>(
                         listener: (context, state) {
                           if (state is AuthenticationAuthenticated) {
-                            Navigator.pushReplacement(
+                            Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const HomeScreen(),
+                                builder: (context) => HomeScreen(),
                               ),
+                              (route) => true,
                             );
                           }
                         },

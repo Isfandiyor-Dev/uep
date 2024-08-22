@@ -2,9 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uep/bloc/auth/auth_bloc.dart';
 import 'package:uep/bloc/auth/auth_event.dart';
+import 'package:uep/bloc/group/group_bloc.dart';
 import 'package:uep/bloc/profile/profile_bloc.dart';
+import 'package:uep/bloc/users/users_bloc.dart';
 import 'package:uep/services/auth_service.dart';
+import 'package:uep/services/group_service.dart';
 import 'package:uep/services/profile_service.dart';
+import 'package:uep/services/users_service.dart';
 import 'package:uep/ui/intro/splash_screen.dart';
 
 void main() {
@@ -16,6 +20,9 @@ class MainApp extends StatelessWidget {
 
   final AuthService authService = AuthService();
   final ProfileService profileService = ProfileService();
+  final UsersService usersService = UsersService();
+  final GroupService groupService = GroupService();
+
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -30,7 +37,13 @@ class MainApp extends StatelessWidget {
           create: (context) => ProfileBloc(
             profileService: profileService,
           ),
-        )
+        ),
+        BlocProvider(
+          create: (context) => UsersBloc(usersService: usersService),
+        ),
+        BlocProvider(
+          create: (context) => GroupBloc(groupService: groupService),
+        ),
       ],
       child: const MaterialApp(
         debugShowCheckedModeBanner: false,

@@ -99,7 +99,7 @@ class _LoginPageState extends State<LoginPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const Text(
-                        "Sign In to Woorkroom",
+                        "Sign In",
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -177,11 +177,12 @@ class _LoginPageState extends State<LoginPage> {
                       BlocListener<AuthenticationBloc, AuthenticationState>(
                         listener: (context, state) {
                           if (state is AuthenticationAuthenticated) {
-                            Navigator.pushReplacement(
+                            Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const HomeScreen(),
+                                builder: (context) => HomeScreen(),
                               ),
+                              (route) => true,
                             );
                           }
                         },
