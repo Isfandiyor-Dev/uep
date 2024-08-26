@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
-class MyTextField extends StatefulWidget {
+class MyAuthTextField extends StatefulWidget {
   final String title;
   final String hintText;
   final TextInputType textInputType;
@@ -9,7 +9,7 @@ class MyTextField extends StatefulWidget {
   final String? Function(String?)? validator;
   final TextEditingController controller;
   final String? errorText;
-  const MyTextField({
+  const MyAuthTextField({
     super.key,
     this.errorText,
     required this.title,
@@ -21,10 +21,10 @@ class MyTextField extends StatefulWidget {
   });
 
   @override
-  State<MyTextField> createState() => _MyTextFieldState();
+  State<MyAuthTextField> createState() => _MyAuthTextFieldState();
 }
 
-class _MyTextFieldState extends State<MyTextField> {
+class _MyAuthTextFieldState extends State<MyAuthTextField> {
   bool isObscure = true;
 
   Widget? suffixIcon() {

@@ -19,7 +19,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
           emit(const ProfileError("Foydalanuvchi ma'lumotlari topilmadi"));
         }
       } catch (e) {
-        emit(ProfileError("Xatolik yuz berdi: $e"));
+        emit(ProfileError("Xatolik yuz get profile info berdi: $e"));
       }
     });
 
@@ -29,10 +29,10 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   Future<void> _onEditProfile(
       EditProfile event, Emitter<ProfileState> emit) async {
     try {
-      await profileService.updateProfile(event.data);
+      await profileService.updateProfile(event.data, image: event.image);
       add(LoadProfile());
     } catch (e) {
-      emit(ProfileError("Xatolik yuz berdi: $e"));
+      emit(ProfileError("Xatolik yuz edit profile info berdi: $e"));
     }
   }
 }

@@ -6,11 +6,11 @@ import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:uep/bloc/auth/auth_bloc.dart';
 import 'package:uep/bloc/auth/auth_event.dart';
 import 'package:uep/bloc/auth/auth_state.dart';
-import 'package:uep/ui/auth/register/register_new_page.dart';
+import 'package:uep/ui/auth/register/register_page.dart';
 import 'package:uep/utils/validators.dart';
-import 'package:uep/ui/auth/widgets/my_signin_button.dart';
-import 'package:uep/ui/auth/widgets/my_text_field.dart';
-import 'package:uep/ui/screens/home_screen.dart';
+import 'package:uep/ui/auth/widgets/social_auth_buttons.dart';
+import 'package:uep/ui/auth/widgets/my_auth_text_field.dart';
+import 'package:uep/core/home_screen.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -128,7 +128,7 @@ class _LoginPageState extends State<LoginPage> {
                         validator: Validator.validatePhoneNumber,
                       ),
 
-                      MyTextField(
+                      MyAuthTextField(
                         controller: _passwordController,
                         validator: Validator.validatePassword,
                         title: "Password",
@@ -145,7 +145,7 @@ class _LoginPageState extends State<LoginPage> {
                               MaterialPageRoute(
                                 builder: (context) => const HomeScreen(),
                               ),
-                              (route) => true,
+                              (route) => false,
                             );
                           }
                         },
@@ -190,15 +190,15 @@ class _LoginPageState extends State<LoginPage> {
                       const Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          MySignInButton(
+                          SocialAuthButtons(
                             imagePath: "assets/google.svg",
                           ),
                           SizedBox(width: 15),
-                          MySignInButton(
+                          SocialAuthButtons(
                             imagePath: "assets/facebook.svg",
                           ),
                           SizedBox(width: 15),
-                          MySignInButton(
+                          SocialAuthButtons(
                             imagePath: "assets/github.svg",
                           ),
                         ],
@@ -208,7 +208,7 @@ class _LoginPageState extends State<LoginPage> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const RegisterNewPage(),
+                              builder: (context) => const RegisterPage(),
                             ),
                           );
                         },

@@ -4,7 +4,8 @@ import 'package:uep/bloc/group/group_bloc.dart';
 import 'package:uep/bloc/group/group_event.dart';
 import 'package:uep/bloc/group/group_state.dart';
 import 'package:uep/models/group_model.dart';
-import 'package:uep/ui/admin/pages/group/add_group.dart';
+import 'package:uep/ui/admin/pages/groups/add_group/add_group.dart';
+import 'package:uep/ui/admin/pages/groups/group_detail.dart';
 import 'package:uep/ui/admin/widget/shimmer_users_loading.dart';
 
 class GroupsPage extends StatelessWidget {
@@ -50,16 +51,26 @@ class GroupsPage extends StatelessWidget {
               padding: const EdgeInsets.all(15),
               itemBuilder: (context, index) {
                 Group group = groups[index];
-                return Card(
-                  margin: const EdgeInsets.symmetric(vertical: 5),
-                  child: ListTile(
-                    contentPadding: const EdgeInsets.all(15),
-                    leading: const CircleAvatar(
-                      backgroundColor: Colors.blue,
-                      radius: 35,
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const GroupDetail(),
+                      ),
+                    );
+                  },
+                  child: Card(
+                    margin: const EdgeInsets.symmetric(vertical: 5),
+                    child: ListTile(
+                      contentPadding: const EdgeInsets.all(15),
+                      leading: const CircleAvatar(
+                        backgroundColor: Colors.blue,
+                        radius: 35,
+                      ),
+                      title: Text(group.name),
+                      subtitle: Text(group.createdAt.toString()),
                     ),
-                    title: Text(group.name),
-                    subtitle: Text(group.createdAt.toString()),
                   ),
                 );
               },

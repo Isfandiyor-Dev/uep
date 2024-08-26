@@ -4,8 +4,8 @@ import 'package:uep/bloc/auth/auth_bloc.dart';
 import 'package:uep/bloc/group/group_bloc.dart';
 import 'package:uep/bloc/group/group_event.dart';
 import 'package:uep/models/user_model.dart';
-import 'package:uep/ui/admin/pages/group/choose_teacher.dart';
-import 'package:uep/ui/screens/widgets/custom_text_field.dart';
+import 'package:uep/ui/admin/pages/groups/add_group/choose_teacher.dart';
+import 'package:uep/ui/global_screens/widgets/custom_text_field.dart';
 
 class AddGroupPage extends StatefulWidget {
   const AddGroupPage({super.key});

@@ -5,10 +5,9 @@ import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:uep/bloc/auth/auth_bloc.dart';
 import 'package:uep/bloc/auth/auth_event.dart';
 import 'package:uep/bloc/auth/auth_state.dart';
-import 'package:uep/utils/validators.dart';
-import 'package:uep/ui/auth/widgets/my_signin_button.dart';
-import 'package:uep/ui/auth/widgets/my_text_field.dart';
-import 'package:uep/ui/screens/home_screen.dart';
+import 'package:uep/ui/auth/widgets/social_auth_buttons.dart';
+import 'package:uep/ui/auth/widgets/my_auth_text_field.dart';
+import 'package:uep/core/home_screen.dart';
 
 enum Role {
   student(["Student", 1]),
@@ -19,14 +18,14 @@ enum Role {
   const Role(this.description);
 }
 
-class RegisterNewPage extends StatefulWidget {
-  const RegisterNewPage({super.key});
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key});
 
   @override
-  State<RegisterNewPage> createState() => _RegisterNewPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _RegisterNewPageState extends State<RegisterNewPage> {
+class _RegisterPageState extends State<RegisterPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -175,7 +174,7 @@ class _RegisterNewPageState extends State<RegisterNewPage> {
                                 },
                               ),
                               const SizedBox(height: 15),
-                              MyTextField(
+                              MyAuthTextField(
                                 controller: _nameController,
                                 // validator: Validator.validateName,
                                 title: "Name",
@@ -184,7 +183,7 @@ class _RegisterNewPageState extends State<RegisterNewPage> {
                                 textInputType: TextInputType.name,
                               ),
                               const SizedBox(height: 15),
-                              MyTextField(
+                              MyAuthTextField(
                                 controller: _passwordController,
                                 // validator: Validator.validatePassword,
                                 title: "Password",
@@ -194,7 +193,7 @@ class _RegisterNewPageState extends State<RegisterNewPage> {
                                 isObscurely: true,
                               ),
                               const SizedBox(height: 15),
-                              MyTextField(
+                              MyAuthTextField(
                                 controller: _confirmPasswordController,
                                 // validator: (value) =>
                                 //     Validator.validateConfirmPassword(
@@ -264,15 +263,15 @@ class _RegisterNewPageState extends State<RegisterNewPage> {
                       const Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          MySignInButton(
+                          SocialAuthButtons(
                             imagePath: "assets/google.svg",
                           ),
                           SizedBox(width: 15),
-                          MySignInButton(
+                          SocialAuthButtons(
                             imagePath: "assets/facebook.svg",
                           ),
                           SizedBox(width: 15),
-                          MySignInButton(
+                          SocialAuthButtons(
                             imagePath: "assets/github.svg",
                           ),
                         ],

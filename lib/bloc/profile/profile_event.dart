@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:equatable/equatable.dart';
 
 abstract class ProfileEvent extends Equatable {
@@ -11,5 +13,6 @@ class LoadProfile extends ProfileEvent {}
 
 class EditProfile extends ProfileEvent {
   final Map<String, dynamic> data;
-  const EditProfile({required this.data});
+  final File? image;
+  const EditProfile({required this.data, this.image});
 }
