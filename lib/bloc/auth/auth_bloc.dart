@@ -45,7 +45,7 @@ class AuthenticationBloc
         emit(AuthenticationUnauthenticated());
       }
     } catch (e) {
-      emit(AuthenticationFailure(error: 'Sign up failed: ${e.toString()}'));
+      emit(AuthenticationFailure(error: (e as Map<String, dynamic>)));
     }
   }
 
@@ -58,7 +58,7 @@ class AuthenticationBloc
       await authService.signIn(event.data);
       emit(AuthenticationAuthenticated());
     } catch (e) {
-      emit(AuthenticationFailure(error: 'Sign in failed: ${e.toString()}'));
+      emit(AuthenticationFailure(error: (e as Map<String, dynamic>)));
     }
   }
 
@@ -72,7 +72,7 @@ class AuthenticationBloc
       add(AuthenticationStarted());
       // emit(AuthenticationUnauthenticated());
     } catch (e) {
-      emit(AuthenticationFailure(error: 'Logout failed: ${e.toString()}'));
+      emit(AuthenticationFailure(error: (e as Map<String, dynamic>)));
     }
   }
 }

@@ -3,19 +3,22 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uep/bloc/auth/auth_bloc.dart';
 import 'package:uep/bloc/auth/auth_event.dart';
 import 'package:uep/bloc/auth/auth_state.dart';
+import 'package:uep/bloc/group/group_bloc.dart';
+import 'package:uep/bloc/group/group_event.dart';
+import 'package:uep/bloc/group/group_state.dart';
 import 'package:uep/bloc/profile/profile_bloc.dart';
 import 'package:uep/bloc/profile/profile_event.dart';
 import 'package:uep/bloc/profile/profile_state.dart';
+import 'package:uep/models/group_model.dart';
 import 'package:uep/models/user_model.dart';
 import 'package:uep/ui/admin/widget/drawer_widget.dart';
+import 'package:uep/ui/admin/widget/shimmer_users_loading.dart';
 import 'package:uep/ui/auth/login/login_page.dart';
 import 'package:uep/ui/screens/profile/profile_page.dart';
 import 'package:uep/ui/screens/widgets/shimmer_profile_loading.dart';
 
 class HomeScreen extends StatelessWidget {
-  HomeScreen({super.key});
-
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +44,7 @@ class HomeScreen extends StatelessWidget {
               title: const Text("Home"),
               centerTitle: true,
               toolbarHeight: 80,
+              automaticallyImplyLeading: userModel.role.id == 3 ? true : false,
               actions: [
                 BlocListener<AuthenticationBloc, AuthenticationState>(
                   listener: (context, state) {
@@ -83,14 +87,57 @@ class HomeScreen extends StatelessWidget {
               ],
             ),
             body: Padding(
-              padding: const EdgeInsets.all(25.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Name: ${userModel.name}'),
-                  Text('Phone: ${userModel.phone}'),
-                  Text('Role: ${userModel.role.name}'),
-                ],
+              padding: const EdgeInsets.all(15.0),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Name: ${userModel.name}'),
+                    Text('Phone: ${userModel.phone}'),
+                    Text('Role: ${userModel.role.name}'),
+                    const SizedBox(height: 20),
+                    BlocBuilder<GroupBloc, GroupState>(
+                      bloc: context.read<GroupBloc>()..add(GetStudentGroups()),
+                      builder: (context, state) {
+                        if (state is GroupLoading) {
+                          return const ShimmerUsersLoading();
+                        } else if (state is GroupError) {
+                          return Center(
+                            child: Text("Xatolik yuz berdi: ${state.message}"),
+                          );
+                        } else if (state is GroupLoaded) {
+                          List<Group> groups = state.groups;
+                          return SizedBox(
+                            width: double.infinity,
+                            height: MediaQuery.of(context).size.height * 0.7,
+                            child: ListView.builder(
+                              itemCount: groups.length,
+                              itemBuilder: (context, index) {
+                                Group group = groups[index];
+                                return Card(
+                                  margin:
+                                      const EdgeInsets.symmetric(vertical: 5),
+                                  child: ListTile(
+                                    contentPadding: const EdgeInsets.all(15),
+                                    leading: const CircleAvatar(
+                                      backgroundColor: Colors.blue,
+                                      radius: 35,
+                                    ),
+                                    title: Text(group.name),
+                                    subtitle: Text(group.createdAt.toString()),
+                                  ),
+                                );
+                              },
+                            ),
+                          );
+                        } else {
+                          // Default holat
+                          return const SizedBox.shrink();
+                        }
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
           );

@@ -22,7 +22,7 @@ class AuthService {
       return response.data;
     } on DioException catch (e) {
       print("Dio Xatoligi: ${e.response?.data}");
-      rethrow;
+      throw e.response?.data["data"];
     } catch (e) {
       print("Sing Upda Xatolik: $e");
     }
@@ -44,7 +44,7 @@ class AuthService {
       return response.data;
     } on DioException catch (e) {
       print("Dio Xatoligi: ${e.response?.data}");
-      rethrow;
+      throw e.response?.data["data"];
     } catch (e) {
       print("Sing Upda Xatolik: $e");
     }
@@ -65,6 +65,7 @@ class AuthService {
       }
     } on DioException catch (e) {
       print("Dio logout xatoligi: $e");
+      throw e.response?.data["data"];
     } catch (e) {
       print("Logout Xatolik: $e");
     }

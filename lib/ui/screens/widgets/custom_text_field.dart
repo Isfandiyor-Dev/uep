@@ -4,18 +4,20 @@ class CustomTextField extends StatelessWidget {
   final String labelText;
   final String? hintText;
   final IconData? icon;
-  final TextEditingController controller;
+  final TextEditingController? controller;
   final String? Function(String?)? validator;
   final bool readOnly;
+  void Function()? onTap;
 
-  const CustomTextField({
+  CustomTextField({
     super.key,
     required this.labelText,
     this.hintText,
     this.icon,
-    required this.controller,
+    this.controller,
     this.validator,
     required this.readOnly,
+    this.onTap,
   });
 
   @override
@@ -36,9 +38,10 @@ class CustomTextField extends StatelessWidget {
           controller: controller,
           readOnly: readOnly,
           validator: validator,
+          onTap: onTap,
           decoration: InputDecoration(
             hintText: hintText,
-            // prefixIcon: Icon(icon, color: Colors.grey),
+            hintStyle: TextStyle(color: Colors.grey[500]),
             contentPadding:
                 const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
             border: OutlineInputBorder(

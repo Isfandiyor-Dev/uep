@@ -21,5 +21,29 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
         emit(GroupError("Xatolik yuz berdi: $e"));
       }
     });
+    on<AddGroup>(addGroup);
+    on<GetStudentGroups>(getStudentGroups);
+  }
+
+  Future<void> addGroup(AddGroup event, Emitter<GroupState> emit) async {
+    try {
+      await groupService.addGroup(event.data);
+    } catch (e) {
+      emit(GroupError("Xatolik yuz berdi: $e"));
+    }
+  }
+
+  Future<void> getStudentGroups(event, emit) async {
+    emit(GroupLoading());
+    try {
+      List<Group>? data = await groupService.getStudentGroups();
+      if (data != null) {
+        emit(GroupLoaded(data));
+      } else {
+        emit(const GroupError("Foydalanuvchi ma'lumotlari topilmadi"));
+      }
+    } catch (e) {
+      emit(GroupError("Xatolik yuz berdi: $e"));
+    }
   }
 }

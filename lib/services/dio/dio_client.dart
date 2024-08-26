@@ -8,8 +8,8 @@ class DioClient {
 
   DioClient._private() {
     _dio.options
-      ..connectTimeout = const Duration(milliseconds: 5)
-      ..receiveTimeout = const Duration(seconds: 3)
+      ..connectTimeout = const Duration(milliseconds: 50)
+      ..receiveTimeout = const Duration(seconds: 30)
       ..baseUrl = "http://millima.flutterwithakmaljon.uz";
 
     _dio.interceptors.add(DioInterceptor());

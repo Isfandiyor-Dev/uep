@@ -4,6 +4,7 @@ import 'package:uep/bloc/group/group_bloc.dart';
 import 'package:uep/bloc/group/group_event.dart';
 import 'package:uep/bloc/group/group_state.dart';
 import 'package:uep/models/group_model.dart';
+import 'package:uep/ui/admin/pages/group/add_group.dart';
 import 'package:uep/ui/admin/widget/shimmer_users_loading.dart';
 
 class GroupsPage extends StatelessWidget {
@@ -17,6 +18,17 @@ class GroupsPage extends StatelessWidget {
         title: const Text("Groups"),
         centerTitle: true,
         backgroundColor: Colors.grey[300],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const AddGroupPage(),
+            ),
+          );
+        },
+        child: const Icon(Icons.add),
       ),
       body: BlocBuilder<GroupBloc, GroupState>(
         bloc: context.read<GroupBloc>()..add(GetGroups()),

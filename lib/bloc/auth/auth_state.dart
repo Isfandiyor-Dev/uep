@@ -16,7 +16,7 @@ class AuthenticationAuthenticated extends AuthenticationState {}
 class AuthenticationUnauthenticated extends AuthenticationState {}
 
 class AuthenticationFailure extends AuthenticationState {
-  final String error;
+  final Map<String, dynamic> error;
 
   const AuthenticationFailure({required this.error});
 

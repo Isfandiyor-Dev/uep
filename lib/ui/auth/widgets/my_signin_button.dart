@@ -10,8 +10,8 @@ class MySignInButton extends StatelessWidget {
     return InkWell(
       onTap: () {},
       child: Container(
-        width: 75,
-        height: 75,
+        width: 65,
+        height: 65,
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),

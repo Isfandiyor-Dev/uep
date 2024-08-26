@@ -62,15 +62,15 @@ class _LoginPageState extends State<LoginPage> {
                 children: [
                   Image.asset(
                     "assets/logo.png",
-                    width: 100,
-                    height: 100,
+                    width: 95,
+                    height: 95,
                     fit: BoxFit.cover,
                     color: const Color(0xff3A89FF),
                   ),
                   const Text(
                     "Universal Education Platform",
                     style: TextStyle(
-                      fontSize: 19,
+                      fontSize: 16,
                       color: Color(0xff3A89FF),
                       fontWeight: FontWeight.bold,
                     ),
@@ -81,7 +81,7 @@ class _LoginPageState extends State<LoginPage> {
               const SizedBox(height: 10),
               Container(
                 width: sreenWidth * 0.90,
-                height: sreenHeight * 0.7,
+                height: sreenHeight * 0.75,
                 padding: const EdgeInsets.all(25),
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -136,51 +136,14 @@ class _LoginPageState extends State<LoginPage> {
                         textInputType: TextInputType.visiblePassword,
                         isObscurely: true,
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              Transform.scale(
-                                scale: 1.2,
-                                child: Checkbox(
-                                  value: true,
-                                  onChanged: (value) {},
-                                  fillColor: WidgetStatePropertyAll(
-                                    Colors.lightBlue[700],
-                                  ),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(5),
-                                  ),
-                                ),
-                              ),
-                              const Text(
-                                "Remember me",
-                                style: TextStyle(
-                                  fontSize: 16,
-                                ),
-                              ),
-                            ],
-                          ),
-                          TextButton(
-                            onPressed: () {},
-                            child: const Text(
-                              "Forgot Password?",
-                              style: TextStyle(
-                                color: Color(0xff7D8593),
-                                fontSize: 15,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+
                       BlocListener<AuthenticationBloc, AuthenticationState>(
                         listener: (context, state) {
                           if (state is AuthenticationAuthenticated) {
                             Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => HomeScreen(),
+                                builder: (context) => const HomeScreen(),
                               ),
                               (route) => true,
                             );
@@ -190,7 +153,7 @@ class _LoginPageState extends State<LoginPage> {
                           borderRadius: BorderRadius.circular(15),
                           onTap: _onTapLogin,
                           child: Container(
-                            height: 60,
+                            height: 50,
                             width: double.infinity,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(15),
@@ -210,7 +173,7 @@ class _LoginPageState extends State<LoginPage> {
                                   "Sign In ",
                                   style: TextStyle(
                                     color: Colors.white,
-                                    fontSize: 20,
+                                    fontSize: 17,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),

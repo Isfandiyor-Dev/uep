@@ -1,5 +1,4 @@
-// ignore_for_file: avoid_print
-
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
@@ -16,10 +15,7 @@ enum Role {
   teacher(["Teacher", 2]),
   admin(["Admin", 3]);
 
-  // String qiymatni saqlash uchun maydon
   final List description;
-
-  // Konstruktor
   const Role(this.description);
 }
 
@@ -32,45 +28,43 @@ class RegisterNewPage extends StatefulWidget {
 
 class _RegisterNewPageState extends State<RegisterNewPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
   final _nameController = TextEditingController();
-
   final _passwordController = TextEditingController();
-
   final _confirmPasswordController = TextEditingController();
 
   PhoneNumber phoneNumber = PhoneNumber();
-
   Role role = Role.student;
 
   void _onTapRegister() {
-    print(_nameController.text);
-    print(_passwordController.text);
-    print(_confirmPasswordController.text);
-    print(phoneNumber);
-
     if (_formKey.currentState!.validate()) {
-      try {
-        Map<String, dynamic> data = {
-          "name": _nameController.text,
-          "phone": phoneNumber.phoneNumber,
-          "password": _passwordController.text,
-          "password_confirmation": _confirmPasswordController.text,
-          "role_id": role.description[1],
-        };
-        context
-            .read<AuthenticationBloc>()
-            .add(AuthenticationSignUp(data: data));
-      } catch (e) {
-        print('Xatolik yuz berdi: $e');
+      Map<String, dynamic> data = {
+        "name": _nameController.text,
+        "phone": phoneNumber.phoneNumber,
+        "password": _passwordController.text,
+        "password_confirmation": _confirmPasswordController.text,
+        "role_id": role.description[1],
+      };
+      context.read<AuthenticationBloc>().add(AuthenticationSignUp(data: data));
+    }
+  }
+
+  String? getErrorText(AuthenticationState state, String name) {
+    if (state is AuthenticationFailure) {
+      if (state.error[name] == null || state.error[name].isEmpty) {
+        return null;
+      } else {
+        if (name == "phone") {}
+        print(state.error[name][0].toString());
+        return state.error[name][0];
       }
     }
+    return null;
   }
 
   @override
   Widget build(BuildContext context) {
-    double sreenWidth = MediaQuery.of(context).size.width;
-    double sreenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
       backgroundColor: Colors.blue[100],
@@ -84,15 +78,15 @@ class _RegisterNewPageState extends State<RegisterNewPage> {
                 children: [
                   Image.asset(
                     "assets/logo.png",
-                    width: 100,
-                    height: 100,
+                    width: 90,
+                    height: 90,
                     fit: BoxFit.cover,
                     color: const Color(0xff3A89FF),
                   ),
                   const Text(
                     "Universal Education Platform",
                     style: TextStyle(
-                      fontSize: 19,
+                      fontSize: 16,
                       color: Color(0xff3A89FF),
                       fontWeight: FontWeight.bold,
                     ),
@@ -102,8 +96,8 @@ class _RegisterNewPageState extends State<RegisterNewPage> {
               ),
               const SizedBox(height: 10),
               Container(
-                width: sreenWidth * 0.90,
-                height: sreenHeight * 0.9,
+                width: screenWidth * 0.90,
+                height: screenHeight,
                 padding: const EdgeInsets.all(25),
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -126,7 +120,7 @@ class _RegisterNewPageState extends State<RegisterNewPage> {
                           const Text(
                             "Register",
                             style: TextStyle(
-                              fontSize: 25,
+                              fontSize: 20,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -154,105 +148,77 @@ class _RegisterNewPageState extends State<RegisterNewPage> {
                           )
                         ],
                       ),
-                      const Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          "Mobile Number",
-                          style: TextStyle(
-                            color: Color(0xff7D8592),
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-
-                      // This is Phone number field
-                      InternationalPhoneNumberInput(
-                        onInputChanged: (value) {
-                          print("Telefon Raqam: $value");
-                          phoneNumber = value;
-                        },
-                        inputBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        validator: Validator.validatePhoneNumber,
-                      ),
-                      MyTextField(
-                        controller: _nameController,
-                        validator: Validator.validateName,
-                        title: "Name",
-                        hintText: "Pavel Durov",
-                        textInputType: TextInputType.name,
-                      ),
-                      // Password text field
-                      MyTextField(
-                        controller: _passwordController,
-                        validator: Validator.validatePassword,
-                        title: "Password",
-                        hintText: "••••••••",
-                        textInputType: TextInputType.visiblePassword,
-                        isObscurely: true,
-                      ),
-                      MyTextField(
-                        controller: _confirmPasswordController,
-                        validator: (value) => Validator.validateConfirmPassword(
-                            value, _passwordController.text),
-                        title: "Password Confirmation",
-                        hintText: "••••••••",
-                        textInputType: TextInputType.visiblePassword,
-                        isObscurely: true,
-                      ),
-
-                      // Remember me and Forgot password
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
+                      BlocBuilder<AuthenticationBloc, AuthenticationState>(
+                        builder: (context, state) {
+                          return Column(
                             children: [
-                              Transform.scale(
-                                scale: 1.2,
-                                child: Checkbox(
-                                  value: true,
-                                  onChanged: (value) {},
-                                  fillColor: WidgetStatePropertyAll(
-                                    Colors.lightBlue[700],
-                                  ),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(5),
+                              const Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  "Mobile Number",
+                                  style: TextStyle(
+                                    color: Color(0xff7D8592),
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
                                   ),
                                 ),
                               ),
-                              const Text(
-                                "Remember me",
-                                style: TextStyle(
-                                  fontSize: 16,
+                              InternationalPhoneNumberInput(
+                                onInputChanged: (value) {
+                                  phoneNumber = value;
+                                },
+                                inputBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(15),
                                 ),
+                                validator: (value) {
+                                  return getErrorText(state, "phone");
+                                },
+                              ),
+                              const SizedBox(height: 15),
+                              MyTextField(
+                                controller: _nameController,
+                                // validator: Validator.validateName,
+                                title: "Name",
+                                hintText: "Pavel Durov",
+                                errorText: getErrorText(state, "name"),
+                                textInputType: TextInputType.name,
+                              ),
+                              const SizedBox(height: 15),
+                              MyTextField(
+                                controller: _passwordController,
+                                // validator: Validator.validatePassword,
+                                title: "Password",
+                                hintText: "••••••••",
+                                errorText: getErrorText(state, "password"),
+                                textInputType: TextInputType.visiblePassword,
+                                isObscurely: true,
+                              ),
+                              const SizedBox(height: 15),
+                              MyTextField(
+                                controller: _confirmPasswordController,
+                                // validator: (value) =>
+                                //     Validator.validateConfirmPassword(
+                                //         value, _passwordController.text),
+                                title: "Password Confirmation",
+                                hintText: "••••••••",
+                                errorText: getErrorText(
+                                    state, "password_confirmation"),
+                                textInputType: TextInputType.visiblePassword,
+                                isObscurely: true,
                               ),
                             ],
-                          ),
-                          TextButton(
-                            onPressed: () {},
-                            child: const Text(
-                              "Forgot Password?",
-                              style: TextStyle(
-                                color: Color(0xff7D8593),
-                                fontSize: 15,
-                              ),
-                            ),
-                          ),
-                        ],
+                          );
+                        },
                       ),
                       const SizedBox(height: 10),
-                      // Sign In Button
                       BlocListener<AuthenticationBloc, AuthenticationState>(
                         listener: (context, state) {
                           if (state is AuthenticationAuthenticated) {
-                            Navigator.pushAndRemoveUntil(
+                            Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => HomeScreen(),
+                                builder: (context) => const HomeScreen(),
                               ),
-                              (route) => true,
                             );
                           }
                         },
@@ -260,7 +226,7 @@ class _RegisterNewPageState extends State<RegisterNewPage> {
                           borderRadius: BorderRadius.circular(15),
                           onTap: _onTapRegister,
                           child: Container(
-                            height: 60,
+                            height: 50,
                             width: double.infinity,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(15),
@@ -280,7 +246,7 @@ class _RegisterNewPageState extends State<RegisterNewPage> {
                                   "Sign Up",
                                   style: TextStyle(
                                     color: Colors.white,
-                                    fontSize: 20,
+                                    fontSize: 17,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
@@ -311,16 +277,27 @@ class _RegisterNewPageState extends State<RegisterNewPage> {
                           ),
                         ],
                       ),
-                      TextButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        child: const Text(
-                          "Do you have an account?",
-                          style: TextStyle(
-                            color: Color(0xff3F8CFF),
-                            fontSize: 17,
+                      const SizedBox(height: 10),
+                      RichText(
+                        text: TextSpan(
+                          text: "Already have an account?",
+                          style: const TextStyle(
+                            color: Color(0xff7D8592),
+                            fontSize: 15,
                           ),
+                          children: [
+                            TextSpan(
+                              text: " Sign In",
+                              style: const TextStyle(
+                                color: Color(0xff3F8CFF),
+                                fontWeight: FontWeight.bold,
+                              ),
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () {
+                                  Navigator.pop(context);
+                                },
+                            ),
+                          ],
                         ),
                       ),
                     ],

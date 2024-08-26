@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
 import 'package:uep/models/group_model.dart';
-import 'package:uep/models/user_model.dart';
 
 abstract class GroupState extends Equatable {
   const GroupState();

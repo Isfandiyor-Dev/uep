@@ -5,10 +5,12 @@ import 'package:uep/bloc/auth/auth_event.dart';
 import 'package:uep/bloc/group/group_bloc.dart';
 import 'package:uep/bloc/profile/profile_bloc.dart';
 import 'package:uep/bloc/users/users_bloc.dart';
+import 'package:uep/bloc/working_day/working_day_bloc.dart';
 import 'package:uep/services/auth_service.dart';
 import 'package:uep/services/group_service.dart';
 import 'package:uep/services/profile_service.dart';
 import 'package:uep/services/users_service.dart';
+import 'package:uep/services/working_day_service.dart';
 import 'package:uep/ui/intro/splash_screen.dart';
 
 void main() {
@@ -22,7 +24,7 @@ class MainApp extends StatelessWidget {
   final ProfileService profileService = ProfileService();
   final UsersService usersService = UsersService();
   final GroupService groupService = GroupService();
-
+  final WorkingDayService workingDayService = WorkingDayService();
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -43,6 +45,10 @@ class MainApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => GroupBloc(groupService: groupService),
+        ),
+        BlocProvider(
+          create: (context) =>
+              WorkingDayBloc(workingDayService: workingDayService),
         ),
       ],
       child: const MaterialApp(

@@ -25,8 +25,8 @@ class Validator {
   static String? validatePassword(String? value) {
     if (value == null || value.isEmpty) {
       return 'Parolni kiriting';
-    } else if (value.length < 8) {
-      return 'Parol kamida 8 ta belgidan iborat bo\'lishi kerak';
+    } else if (value.length < 6) {
+      return 'Parol kamida 6 ta belgidan iborat bo\'lishi kerak';
     }
     return null; // Hammasi yaxshi bo'lsa, null qaytadi
   }

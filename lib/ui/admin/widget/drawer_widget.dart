@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:uep/ui/admin/pages/admins_page.dart';
-import 'package:uep/ui/admin/pages/group_page.dart';
+import 'package:uep/ui/admin/pages/group/group_page.dart';
 import 'package:uep/ui/admin/pages/students_page.dart';
 import 'package:uep/ui/admin/pages/teachers_page.dart';
+import 'package:uep/ui/admin/pages/working_day_page.dart';
 
 class AdminDrawer extends StatelessWidget {
   const AdminDrawer({super.key});
@@ -65,6 +66,17 @@ class AdminDrawer extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) => const GroupsPage(),
+                ),
+              );
+            },
+          ),
+          ListTile(
+            title: const Text('Working Day'),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const WorkingDaysPage(),
                 ),
               );
             },

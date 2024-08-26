@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
-class ShimmerUsersLoading extends StatelessWidget {
-  const ShimmerUsersLoading({super.key});
+class ShimmerGroupLoading extends StatelessWidget {
+  const ShimmerGroupLoading({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Shimmer.fromColors(
-      baseColor: Colors.grey[400]!,
-      highlightColor: Colors.grey[200]!,
-      child: SizedBox(
-        height: MediaQuery.of(context).size.height,
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Choose Teacher"),
+        centerTitle: true,
+      ),
+      body: Shimmer.fromColors(
+        baseColor: Colors.grey[400]!,
+        highlightColor: Colors.grey[200]!,
         child: ListView.builder(
           itemCount: 15,
-          padding: const EdgeInsets.all(10),
+          padding: const EdgeInsets.all(15),
           itemBuilder: (context, index) {
             return Card(
               margin: const EdgeInsets.symmetric(vertical: 5),

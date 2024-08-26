@@ -8,15 +8,16 @@ class MyTextField extends StatefulWidget {
   final bool isObscurely;
   final String? Function(String?)? validator;
   final TextEditingController controller;
-
+  final String? errorText;
   const MyTextField({
     super.key,
+    this.errorText,
     required this.title,
     required this.hintText,
     required this.textInputType,
     required this.controller,
     this.isObscurely = false,
-    required this.validator,
+    this.validator,
   });
 
   @override
@@ -61,7 +62,9 @@ class _MyTextFieldState extends State<MyTextField> {
           controller: widget.controller,
           obscureText: widget.isObscurely && isObscure,
           keyboardType: widget.textInputType,
+          validator: widget.validator,
           decoration: InputDecoration(
+            errorText: widget.errorText,
             border: const OutlineInputBorder(
               borderRadius: BorderRadius.all(
                 Radius.circular(15),
