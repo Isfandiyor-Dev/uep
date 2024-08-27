@@ -8,7 +8,6 @@ import 'package:uep/bloc/profile/profile_bloc.dart';
 import 'package:uep/bloc/profile/profile_event.dart';
 import 'package:uep/bloc/profile/profile_state.dart';
 import 'package:uep/models/user_model.dart';
-import 'package:uep/ui/admin/widget/shimmer_users_loading.dart';
 import 'package:uep/utils/validators.dart';
 import 'package:uep/ui/global_screens/widgets/custom_text_field.dart';
 
@@ -58,7 +57,6 @@ class _ProfilePageState extends State<ProfilePage> {
           image: image,
         ),
       );
-      Navigator.pop(context);
     } else {
       print("Image nullga teng");
     }
@@ -149,20 +147,17 @@ class _ProfilePageState extends State<ProfilePage> {
                     BlocBuilder<ProfileBloc, ProfileState>(
                         builder: (context, state) {
                       if (state is ProfileLoading) {
-                        return const ShimmerUsersLoading();
+                        return const Center(
+                          child: CircularProgressIndicator.adaptive(),
+                        );
                       } else if (state is ProfileError) {
                         return Center(
-                          child: Scaffold(
-                            body: Center(
-                              child:
-                                  Text("Xatolik yuz berdi: ${state.message}"),
-                            ),
-                          ),
+                          child: Text("Xatolik yuz berdi: ${state.message}"),
                         );
                       } else if (state is ProfileLoaded) {
                         UserModel userModel = state.user;
                         nameController.text = userModel.name;
-                        phoneController.text = userModel.phone;
+                        phoneController.text = userModel.phone ?? "";
                         return Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -173,7 +168,8 @@ class _ProfilePageState extends State<ProfilePage> {
                               backgroundImage: image != null
                                   ? FileImage(image!)
                                   : userModel.photo != null
-                                      ? NetworkImage(userModel.photo!)
+                                      ? NetworkImage(
+                                          "http://millima.flutterwithakmaljon.uz/storage/avatars/${userModel.photo!}")
                                       : null,
                               child: image == null && userModel.photo == null
                                   ? !readOnly

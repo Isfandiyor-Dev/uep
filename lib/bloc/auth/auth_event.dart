@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:uep/bloc/auth/auth_bloc.dart';
 
 abstract class AuthenticationEvent extends Equatable {
   const AuthenticationEvent();
@@ -23,6 +24,13 @@ class AuthenticationSignIn extends AuthenticationEvent {
 
   @override
   List<Object> get props => [data];
+}
+
+final class SocialLoginEvent extends AuthenticationEvent {
+  final SocialLoginTypes type;
+  final int? roleId;
+
+  const SocialLoginEvent({required this.type, this.roleId});
 }
 
 class AuthenticationLoggedOut extends AuthenticationEvent {}

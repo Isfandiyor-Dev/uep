@@ -34,7 +34,9 @@ class AuthGate extends StatelessWidget {
           );
         } else if (state is ProfileLoaded) {
           UserModel userModel = state.user;
-          if (userModel.roleId == 3) {
+          // if (userModel.roleId == 3)
+
+          if (userModel.roleId != 0) {
             WidgetsBinding.instance.addPostFrameCallback((_) {
               Navigator.pushAndRemoveUntil(
                 context,

@@ -3,12 +3,14 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 class SocialAuthButtons extends StatelessWidget {
   final String imagePath;
-  const SocialAuthButtons({super.key, required this.imagePath});
+  final void Function() onTap;
+  const SocialAuthButtons(
+      {super.key, required this.onTap, required this.imagePath});
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: onTap,
       child: Container(
         width: 65,
         height: 65,

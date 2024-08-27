@@ -29,11 +29,12 @@ class UsersTabs extends StatelessWidget {
               backgroundColor: Colors.blue,
               radius: 35,
               backgroundImage: userModel.photo != null
-                  ? NetworkImage(userModel.photo!)
+                  ? NetworkImage(
+                      "http://millima.flutterwithakmaljon.uz/storage/avatars/${userModel.photo!}")
                   : null,
             ),
             title: Text(userModel.name),
-            subtitle: Text(userModel.phone),
+            subtitle: Text(userModel.phone ?? userModel.email ?? ""),
           ),
         );
       },

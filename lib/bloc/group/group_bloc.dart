@@ -28,6 +28,7 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
   Future<void> addGroup(AddGroup event, Emitter<GroupState> emit) async {
     try {
       await groupService.addGroup(event.data);
+      add(GetGroups());
     } catch (e) {
       emit(GroupError("Xatolik yuz add group berdi: $e"));
     }

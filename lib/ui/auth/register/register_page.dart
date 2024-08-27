@@ -5,6 +5,7 @@ import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:uep/bloc/auth/auth_bloc.dart';
 import 'package:uep/bloc/auth/auth_event.dart';
 import 'package:uep/bloc/auth/auth_state.dart';
+import 'package:uep/ui/auth/widgets/role_dialog.dart';
 import 'package:uep/ui/auth/widgets/social_auth_buttons.dart';
 import 'package:uep/ui/auth/widgets/my_auth_text_field.dart';
 import 'package:uep/core/home_screen.dart';
@@ -260,19 +261,49 @@ class _RegisterPageState extends State<RegisterPage> {
                         ),
                       ),
                       const SizedBox(height: 15),
-                      const Row(
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           SocialAuthButtons(
                             imagePath: "assets/google.svg",
+                            onTap: () async {
+                              int? roleId = await showRoleDiolog();
+                              // ignore: use_build_context_synchronously
+                              context.read<AuthenticationBloc>().add(
+                                    SocialLoginEvent(
+                                      type: SocialLoginTypes.google,
+                                      roleId: roleId,
+                                    ),
+                                  );
+                            },
                           ),
-                          SizedBox(width: 15),
+                          const SizedBox(width: 15),
                           SocialAuthButtons(
                             imagePath: "assets/facebook.svg",
+                            onTap: () async {
+                              int? roleId = await showRoleDiolog();
+                              // ignore: use_build_context_synchronously
+                              context.read<AuthenticationBloc>().add(
+                                    SocialLoginEvent(
+                                      type: SocialLoginTypes.facebook,
+                                      roleId: roleId,
+                                    ),
+                                  );
+                            },
                           ),
-                          SizedBox(width: 15),
+                          const SizedBox(width: 15),
                           SocialAuthButtons(
                             imagePath: "assets/github.svg",
+                            onTap: () async {
+                              int? roleId = await showRoleDiolog();
+                              // ignore: use_build_context_synchronously
+                              context.read<AuthenticationBloc>().add(
+                                    SocialLoginEvent(
+                                      type: SocialLoginTypes.github,
+                                      roleId: roleId,
+                                    ),
+                                  );
+                            },
                           ),
                         ],
                       ),
@@ -307,6 +338,13 @@ class _RegisterPageState extends State<RegisterPage> {
           ),
         ),
       ),
+    );
+  }
+
+  Future<int> showRoleDiolog() async {
+    return await showDialog(
+      context: context,
+      builder: (ctx) => const RoleDialog(),
     );
   }
 }

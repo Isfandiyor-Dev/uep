@@ -1,43 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:uep/bloc/users/users_bloc.dart';
-import 'package:uep/bloc/users/users_event.dart';
-import 'package:uep/bloc/users/users_state.dart';
-import 'package:uep/models/user_model.dart';
+import 'package:uep/bloc/subject/subject_bloc.dart';
+import 'package:uep/bloc/subject/subject_event.dart';
+import 'package:uep/bloc/subject/subject_state.dart';
+import 'package:uep/models/subject_model.dart';
 import 'package:uep/ui/admin/widget/shimmer_group_loading.dart';
 
-class ChooseTeacher extends StatefulWidget {
-  const ChooseTeacher({super.key});
+class ChooseSubject extends StatefulWidget {
+  const ChooseSubject({super.key});
 
   @override
-  State<ChooseTeacher> createState() => _ChooseTeacherState();
+  State<ChooseSubject> createState() => _ChooseSubjectState();
 }
 
-class _ChooseTeacherState extends State<ChooseTeacher> {
-  int currentUser = 0;
+class _ChooseSubjectState extends State<ChooseSubject> {
+  int currentSubject = 0;
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<UsersBloc, UsersState>(
-      bloc: context.read<UsersBloc>()..add(GetUsers()),
+    return BlocBuilder<SubjectBloc, SubjectState>(
+      bloc: context.read<SubjectBloc>()..add(GetSubjectsEvent()),
       builder: (context, state) {
-        if (state is UsersLoading) {
+        if (state is SubjectsLoading) {
           return const ShimmerGroupLoading();
-        } else if (state is UsersError) {
+        } else if (state is SubjectError) {
           return Center(
             child: Scaffold(
               body: Center(
-                child: Text("Xatolik yuz berdi: ${state.message}"),
+                child: Text("Xatolik yuz berdi: $state"),
               ),
             ),
           );
-        } else if (state is UsersLoaded) {
-          List<UserModel> teachers =
-              state.users.where((user) => user.roleId == 2).toList();
+        } else if (state is SubjectsLoaded) {
+          List<Subject> subjects = state.subjects;
           return Scaffold(
             backgroundColor: Colors.grey[200],
             appBar: AppBar(
-              title: const Text("Choose Teacher"),
+              title: const Text("Subjects"),
               centerTitle: true,
               backgroundColor: Colors.grey[300],
             ),
@@ -50,7 +49,7 @@ class _ChooseTeacherState extends State<ChooseTeacher> {
                   Expanded(
                     child: FloatingActionButton(
                       onPressed: () {
-                        Navigator.pop(context, teachers[currentUser]);
+                        Navigator.pop(context, subjects[currentSubject]);
                       },
                       child: const Text("Choose"),
                     ),
@@ -60,19 +59,19 @@ class _ChooseTeacherState extends State<ChooseTeacher> {
             ),
             body: StatefulBuilder(builder: (context, setState) {
               return ListView.builder(
-                itemCount: teachers.length,
+                itemCount: subjects.length,
                 padding: const EdgeInsets.all(15),
                 itemBuilder: (context, index) {
-                  UserModel userModel = teachers[index];
+                  Subject subject = subjects[index];
                   return Card(
                     margin: const EdgeInsets.symmetric(vertical: 5),
                     child: RadioListTile(
-                      title: Text(userModel.name),
+                      title: Text(subject.name),
                       contentPadding: const EdgeInsets.all(15),
-                      subtitle: Text(userModel.phone ?? userModel.email ?? ""),
-                      value: currentUser,
+                      subtitle: Text(subject.name),
+                      value: currentSubject,
                       onChanged: (value) {
-                        currentUser = index;
+                        currentSubject = index;
                         setState(() {});
                       },
                       groupValue: index,

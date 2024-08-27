@@ -85,6 +85,7 @@ class HomeScreen extends StatelessWidget {
                   children: [
                     Text('Name: ${userModel.name}'),
                     Text('Phone: ${userModel.phone}'),
+                    Text('Email: ${userModel.email}'),
                     Text('Role: ${userModel.role.name}'),
                   ],
                 ),

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:uep/bloc/auth/auth_bloc.dart';
 import 'package:uep/bloc/group/group_bloc.dart';
 import 'package:uep/bloc/group/group_event.dart';
+import 'package:uep/models/subject_model.dart';
 import 'package:uep/models/user_model.dart';
+import 'package:uep/ui/admin/pages/groups/add_group/choose_subject.dart';
 import 'package:uep/ui/admin/pages/groups/add_group/choose_teacher.dart';
 import 'package:uep/ui/global_screens/widgets/custom_text_field.dart';
 
@@ -19,9 +20,11 @@ class _AddGroupPageState extends State<AddGroupPage> {
 
   final teacherOneController = TextEditingController();
   final teacherTwoController = TextEditingController();
+  final subjectController = TextEditingController();
 
   UserModel? teacherOne;
   UserModel? teacherTwo;
+  Subject? subjectField;
 
   void addGroup() {}
 
@@ -55,7 +58,7 @@ class _AddGroupPageState extends State<AddGroupPage> {
                       teacherOne = await Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => ChooseTeacher(),
+                          builder: (context) => const ChooseTeacher(),
                         ),
                       );
 
@@ -74,11 +77,29 @@ class _AddGroupPageState extends State<AddGroupPage> {
                       teacherTwo = await Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => ChooseTeacher(),
+                          builder: (context) => const ChooseTeacher(),
                         ),
                       );
                       if (teacherTwo != null) {
                         teacherTwoController.text = teacherTwo!.name;
+                      }
+                    },
+                  ),
+                  const SizedBox(height: 20),
+                  CustomTextField(
+                    labelText: "Subject",
+                    readOnly: true,
+                    hintText: "Choose Subject",
+                    controller: subjectController,
+                    onTap: () async {
+                      subjectField = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const ChooseSubject(),
+                        ),
+                      );
+                      if (subjectField != null) {
+                        subjectController.text = subjectField!.name;
                       }
                     },
                   ),
@@ -94,9 +115,11 @@ class _AddGroupPageState extends State<AddGroupPage> {
                         "name": nameController.text,
                         "main_teacher_id": teacherOne!.id,
                         "assistant_teacher_id": teacherTwo!.id,
+                        "subject_id": subjectField!.id,
                       },
                     ),
                   );
+                  Navigator.pop(context);
                 }
               },
               child: Container(

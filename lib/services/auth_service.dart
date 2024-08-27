@@ -71,6 +71,28 @@ class AuthService {
     }
   }
 
+  Future<void> socialLogin(Map<String, dynamic> data) async {
+    try {
+      final response = await dioClient.dio.post(
+        '/api/social-login',
+        data: data,
+      );
+      print("Response Social Login: $response");
+      final token = response.data["data"]["token"];
+      if (token != null) {
+        await LocalDb.saveToken(token);
+      } else {
+        throw Exception("Token not found in response");
+      }
+    } on DioException catch (e) {
+      print("DioException social login: $e");
+      throw (e.response?.data);
+    } catch (e) {
+      print("Error social login: $e");
+      rethrow;
+    }
+  }
+
   Future<bool> isAuthenticated() async {
     return await LocalDb.getIdToken() != null;
   }

@@ -187,19 +187,40 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                       ),
-                      const Row(
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           SocialAuthButtons(
                             imagePath: "assets/google.svg",
+                            onTap: () {
+                              context.read<AuthenticationBloc>().add(
+                                    const SocialLoginEvent(
+                                      type: SocialLoginTypes.google,
+                                    ),
+                                  );
+                            },
                           ),
-                          SizedBox(width: 15),
+                          const SizedBox(width: 15),
                           SocialAuthButtons(
                             imagePath: "assets/facebook.svg",
+                            onTap: () {
+                              context.read<AuthenticationBloc>().add(
+                                    const SocialLoginEvent(
+                                      type: SocialLoginTypes.facebook,
+                                    ),
+                                  );
+                            },
                           ),
-                          SizedBox(width: 15),
+                          const SizedBox(width: 15),
                           SocialAuthButtons(
                             imagePath: "assets/github.svg",
+                            onTap: () {
+                              context.read<AuthenticationBloc>().add(
+                                    const SocialLoginEvent(
+                                      type: SocialLoginTypes.github,
+                                    ),
+                                  );
+                            },
                           ),
                         ],
                       ),
